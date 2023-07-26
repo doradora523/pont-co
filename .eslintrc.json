@@ -1,0 +1,9 @@
+{
+  "extends": ["prettier", "react-app"],
+  "rules": {
+    "no-var": "error",
+    "no-multiple-empty-lines": "error",
+    "eqeqeq": "error",
+    "dot-notation": "error"
+  }
+}
