@@ -1,0 +1,27 @@
+@import '../../../styles/config.scss';
+
+.tab-bar {
+  width: 100%;
+  height: 90px;
+  background-color: $main-purple;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #505050;
+
+  div {
+    height: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #505050;
+    cursor: pointer;
+
+    .active {
+      color: #fff;
+    }
+  }
+}
