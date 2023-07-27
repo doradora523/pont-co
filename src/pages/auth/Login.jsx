@@ -1,8 +1,8 @@
 import React from 'react';
 import './Login.scss';
-import AuthBar from '../components/common/bar/AuthBar';
-import Input from '../components/common/Input';
-import SmallButton from '../components/common/button/SmallButton';
+import AuthBar from '../../components/common/bar/AuthBar';
+import Input from '../../components/common/input/Input';
+import SmallButton from '../../components/common/button/SmallButton';
 
 const Login = () => {
   const inputFields = [

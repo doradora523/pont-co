@@ -1,8 +1,8 @@
 import React from 'react';
-import AuthBar from '../components/common/bar/AuthBar';
-import Input from '../components/common/Input';
+import AuthBar from '../../components/common/bar/AuthBar';
+import Input from '../../components/common/input/Input';
 import './SignUp.scss';
-import SmallButton from '../components/common/button/SmallButton';
+import SmallButton from '../../components/common/button/SmallButton';
 
 const SignUp = () => {
   const inputFields = [
