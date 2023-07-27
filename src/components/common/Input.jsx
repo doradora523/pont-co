@@ -5,8 +5,7 @@ const Input = ({ type, className, name, value, placeholder, onChange }) => {
   return (
     <div className={`input-box ${className}`}>
       <label for={name}>{name}</label>
-      <input type={type} name={name} value={value} placeholder={placeholder} onChange={onChange} />
-      
+      <input type={type} name={name} value={value} placeholder={placeholder} onChange={onChange} required />
     </div>
   );
 };

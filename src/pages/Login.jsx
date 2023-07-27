@@ -1,7 +1,7 @@
 import React from 'react';
 import './Login.scss';
 import AuthBar from '../components/common/bar/AuthBar';
-import Input from '../components/common/bar/Input';
+import Input from '../components/common/Input';
 import SmallButton from '../components/common/button/SmallButton';
 
 const Login = () => {
@@ -23,16 +23,17 @@ const Login = () => {
         <br />
         -CO
       </div>
-      {inputFields.map((field) => (
-        <Input
-          key={field.id}
-          className={'login'}
-          label={field.name}
-          name={field.name}
-          type={field.type}
-          placeholder={field.placeholder}
-        />
-      ))}
+      <div className="input-wrapper">
+        {inputFields.map((field) => (
+          <Input
+            key={field.id}
+            label={field.name}
+            name={field.name}
+            type={field.type}
+            placeholder={field.placeholder}
+          />
+        ))}
+      </div>
       <SmallButton name={'Login'} />
     </div>
   );

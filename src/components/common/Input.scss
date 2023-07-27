@@ -1,4 +1,4 @@
-@import '../../../styles/_config.scss';
+@import '../../styles/_config.scss';
 
 .input-box {
   display: flex;
@@ -8,7 +8,8 @@
   label {
     font-size: 13px;
     color: $main-purple;
-    margin-bottom: 7px;
+    margin-bottom: 5px;
+    margin-left: 10px;
   }
 
   input {
@@ -24,10 +25,5 @@
     &:focus {
       outline: none;
     }
-  }
-
-  &.login {
-    position: relative;
-    top: 500px;
   }
 }
