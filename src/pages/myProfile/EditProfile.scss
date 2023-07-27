@@ -1,0 +1,20 @@
+@import '../../styles/config.scss';
+
+.edit-form {
+  border-top: 1px solid $main-gray;
+  margin-top: 15px;
+  padding-top: 40px;
+
+  button {
+    width: 327px;
+    height: 64px;
+    border-radius: 20px;
+    border: none;
+    background-color: $main-purple;
+    font-size: 16px;
+    color: #fff;
+    margin: 0 24px;
+    position: absolute;
+    bottom: 40px;
+  }
+}

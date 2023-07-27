@@ -25,5 +25,14 @@
     &:focus {
       outline: none;
     }
+
+    &.edit-name,
+    &.edit-team {
+      border: 2px solid $main-gray;
+      border-radius: 15px;
+      height: 50px;
+      margin-top: 5px;
+      margin-bottom: 24px;
+    }
   }
 }
