@@ -10,29 +10,26 @@ const TabBar = ({ member, playing, myProfile }) => {
 
   return (
     <div className="tab-bar">
-      <div>
-        <MdPeopleAlt
-          className={member}
-          onClick={() => {
-            navigate('/');
-          }}
-        />
+      <div
+        onClick={() => {
+          navigate('/');
+        }}
+      >
+        <MdPeopleAlt className={member} />
       </div>
-      <div>
-        <TiStarFullOutline
-          className={playing}
-          onClick={() => {
-            navigate('/playing');
-          }}
-        />
+      <div
+        onClick={() => {
+          navigate('/playing');
+        }}
+      >
+        <TiStarFullOutline className={playing} />
       </div>
-      <div>
-        <CgProfile
-          className={myProfile}
-          onClick={() => {
-            navigate('/my-profile');
-          }}
-        />
+      <div
+        onClick={() => {
+          navigate('/my-profile');
+        }}
+      >
+        <CgProfile className={myProfile} />
       </div>
     </div>
   );
