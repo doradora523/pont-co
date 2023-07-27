@@ -5,6 +5,9 @@ const MyProfile = () => {
   return (
     <div>
       <TextBar title={'Members'} setting={'setting'} />
+      <div>
+        
+      </div>
     </div>
   )
 }
