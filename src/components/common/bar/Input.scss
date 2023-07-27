@@ -1,0 +1,33 @@
+@import '../../../styles/_config.scss';
+
+.input-box {
+  display: flex;
+  flex-direction: column;
+  padding: 0 32px;
+
+  label {
+    font-size: 13px;
+    color: $main-purple;
+    margin-bottom: 7px;
+  }
+
+  input {
+    border: none;
+    border-bottom: 1.5px solid $main-purple;
+    font-size: 14px;
+    line-height: 2.5rem;
+    color: #000;
+    text-indent: 10px;
+    background-color: transparent;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &.login {
+    position: relative;
+    top: 500px;
+  }
+}

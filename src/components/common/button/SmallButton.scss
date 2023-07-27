@@ -1,0 +1,28 @@
+@import '../../../styles/config.scss';
+
+.small-button {
+  width: 125px;
+  height: 50px;
+  border: none;
+  border-radius: 30px;
+  background-color: $main-purple;
+  position: absolute;
+  bottom: 46px;
+  right: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    border: 1px solid $main-purple;
+    background-color: #fff;
+    color: $main-purple;
+  }
+  p {
+    font-size: 17px;
+  }
+}

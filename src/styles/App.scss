@@ -1,13 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 body {
   margin: 0;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #eee;
+  font-family: 'Inter', sans-serif;
 }
 
 .App {
+  position: relative;
   width: 375px;
   height: 812px;
-  background-color: #ddd;
+  background-color: #fff;
+  overflow: hidden;
 }
