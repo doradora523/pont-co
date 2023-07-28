@@ -1,0 +1,21 @@
+@import '../../styles/config.scss';
+
+.member-select-btn {
+  border: none;
+  border-radius: 40px;
+  background-color: $main-gray;
+  width: 140px;
+  margin: 7px 0;
+  padding: 10px;
+  cursor: pointer;
+
+  .member-name {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5em;
+  }
+  .member-team {
+    font-size: 13px;
+    color: #7f7f7f;
+  }
+}

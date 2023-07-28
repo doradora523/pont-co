@@ -1,0 +1,22 @@
+.total-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
+
+  .total-icon {
+    font-size: 22px;
+    margin-bottom: 3px;
+  }
+  .total-number {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .total-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #ccc;
+  }
+}
