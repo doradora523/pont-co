@@ -25,4 +25,19 @@
   p {
     font-size: 17px;
   }
+
+  &.on-boarding-btn {
+    width: 185px;
+    background-color: #fff;
+    border: 1px solid $main-purple;
+    color: #000;
+
+    bottom: 50px;
+    right: 50%;
+    transform: translateX(50%);
+
+    &:hover {
+      color: $main-purple;
+    }
+  }
 }

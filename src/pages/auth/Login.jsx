@@ -14,6 +14,10 @@ const Login = () => {
       placeholder: '비밀번호를 입력해주세요.',
     },
   ];
+
+  const handleLogin = () => {
+    
+  }
   return (
     <div className="login">
       <AuthBar login={'active'} />
@@ -23,18 +27,20 @@ const Login = () => {
         <br />
         -CO
       </div>
-      <div className="input-wrapper">
-        {inputFields.map((field) => (
-          <Input
-            key={field.id}
-            label={field.name}
-            name={field.name}
-            type={field.type}
-            placeholder={field.placeholder}
-          />
-        ))}
-      </div>
-      <SmallButton name={'Login'} />
+      <form onSubmit={handleLogin}>
+        <div className="input-wrapper">
+          {inputFields.map((field) => (
+            <Input
+              key={field.id}
+              label={field.name}
+              name={field.name}
+              type={field.type}
+              placeholder={field.placeholder}
+            />
+          ))}
+        </div>
+      </form>
+      <SmallButton name={'Login'} type="submit"/>
     </div>
   );
 };

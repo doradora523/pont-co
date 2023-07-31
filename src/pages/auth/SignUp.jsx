@@ -1,58 +1,70 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import AuthBar from '../../components/common/bar/AuthBar';
 import Input from '../../components/common/input/Input';
-import './SignUp.scss';
+import { inputFields } from '../../static/signupInputFields';
 import SmallButton from '../../components/common/button/SmallButton';
+import useFormValidation from '../../hooks/useFormValidation';
+import './SignUp.scss';
+
+import { auth } from '../../config/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../../config/firebase';
 
 const SignUp = () => {
-  const inputFields = [
-    {
-      id: 'email',
-      type: 'email',
-      name: 'Email',
-      placeholder: '이메일을 입력해주세요.',
-    },
-    {
-      id: 'password',
-      type: 'password',
-      name: 'Password',
-      placeholder: '비밀번호를 입력해주세요.',
-    },
-    {
-      id: 'password-check',
-      type: 'password',
-      name: 'Password Check',
-      placeholder: '비밀번호를 확인해주세요.',
-    },
-    {
-      id: 'user-name',
-      type: 'text',
-      name: 'Name',
-      placeholder: '이름을 입력해주세요.',
-    },
-    {
-      id: 'company',
-      type: 'search',
-      name: 'Company',
-      placeholder: '회사를 검색해주세요.',
-    },
-    {
-      id: 'team',
-      type: 'search',
-      name: 'Team',
-      placeholder: '소속 부서를 검색해주세요.',
-    },
-  ];
+  const { email, userName, team, company, errors } = useSelector((state) => state.signup);
+  const { password, validateField } = useFormValidation();
+  const navigate = useNavigate();
+
+  const userInfoCollectionRef = collection(db, 'users');
+
+  const handleSignUp = async (event) => {
+    event.preventDefault();
+
+    try {
+      // 입력 필드의 값을 가져오기 전에 유효성 검사를 먼저 수행
+      const hasErrors = Object.values(errors).some((error) => error.isError);
+
+      if (hasErrors) {
+        alert('회원가입 양식에 맞게 작성해주세요.');
+      } else {
+        await createUserWithEmailAndPassword(auth, email, password);
+        await addDoc(userInfoCollectionRef, { email, userName, company, team });
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="sign-up">
       <AuthBar signup={'active'} />
-      <div className="input-wrapper">
-        {inputFields.map((field) => (
-          <Input id={field.id} type={field.type} name={field.name} placeholder={field.placeholder} />
-        ))}
-      </div>
-      <SmallButton name={'Sign Up'} />
+      <form onSubmit={handleSignUp}>
+        <div className="input-wrapper">
+          {inputFields.map((field) => (
+            <Input
+              key={field.id}
+              id={field.id}
+              type={field.type}
+              name={errors[field.id].isError ? errors[field.id].message : field.name}
+              placeholder={field.placeholder}
+              error={errors[field.id]?.isError ? 'error-label' : ''}
+              onChange={(event) => validateField(field.id, event.target.value)}
+              autoComplete={
+                field.id === 'email'
+                  ? 'username'
+                  : field.id === 'password' || field.id === 'passwordCheck'
+                  ? 'new-password'
+                  : undefined
+              }
+            />
+          ))}
+        </div>
+        <SmallButton name={'Sign Up'} type="submit" />
+      </form>
     </div>
   );
 };

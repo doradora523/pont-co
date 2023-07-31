@@ -7,7 +7,7 @@ import { ArcElement, CategoryScale, DoughnutController, Title, Tooltip } from 'c
 import './PlayingGame.scss';
 import TextBar from '../../components/common/bar/TextBar';
 import TabBar from '../../components/common/bar/TabBar';
-import MemberButton from '../../components/Playing/MemberButton';
+import MemberButton from '../../components/playing/MemberButton';
 import { membersDummy } from '../../static/membersDummy';
 import { questionsDummy } from '../../static/questionsDummy';
 import { useAnsweredQuestions } from '../../hooks/useAnsweredQuestions';

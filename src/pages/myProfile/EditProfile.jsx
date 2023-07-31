@@ -6,6 +6,9 @@ import { useChangeValue } from '../../hooks/useChangeValue';
 import { useNavigate } from 'react-router-dom';
 import './EditProfile.scss';
 
+import {auth} from '../../config/firebase'
+import {signOut} from 'firebase/auth'
+
 const EditProfile = () => {
   const myProfile = {
     src: 'https://file.newswire.co.kr/data/datafile2/thumb_640/2023/05/1893390626_20230503155222_9195618912.jpg',
@@ -23,7 +26,16 @@ const EditProfile = () => {
     console.log(name, team);
     navigate('/my-profile');
   };
-  
+
+  const handleLogout = async() => {
+    try {
+      await signOut(auth)
+      navigate('/login')
+    } catch(error) {
+      console.error(error)
+    }
+  }
+
   return (
     <div>
       <TextBar title={'Edit Profile'} back={'active'} />
@@ -36,6 +48,7 @@ const EditProfile = () => {
         <button type="submit" className="save-btn">
           Save
         </button>
+        <p className='logout' onClick={handleLogout}>Logout</p>
       </form>
     </div>
   );

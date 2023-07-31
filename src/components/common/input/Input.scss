@@ -10,6 +10,11 @@
     color: $main-purple;
     margin-bottom: 5px;
     margin-left: 10px;
+
+    &.error-label {
+      font-size: 12px;
+      color: red;
+    }
   }
 
   input {

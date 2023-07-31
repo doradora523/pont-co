@@ -7,9 +7,11 @@ import TabBar from '../../components/common/bar/TabBar';
 import Profile from '../../components/myProfile/Profile';
 import Total from '../../components/myProfile/Total';
 import './MyProfile.scss';
+import { useNavigate } from 'react-router-dom';
 
 const MyProfile = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const myProfile = {
     src: 'https://file.newswire.co.kr/data/datafile2/thumb_640/2023/05/1893390626_20230503155222_9195618912.jpg',
@@ -87,8 +89,18 @@ const MyProfile = () => {
       <TextBar title={'My Profile'} setting={'setting'} />
       <Profile src={myProfile.src} name={myProfile.name} team={myProfile.team} />
       <div className="total-wrapper">
-        <Total icon={<PiShootingStarLight />} number={totalDummy[0].number} title={totalDummy[0].title} />
-        <Total icon={<GoPerson />} number={totalDummy[1].number} title={totalDummy[1].title} />
+        <Total
+          onClick={handleTogleBtn}
+          icon={<PiShootingStarLight />}
+          number={totalDummy[0].number}
+          title={totalDummy[0].title}
+        />
+        <Total
+          onClick={() => navigate('/')}
+          icon={<GoPerson />}
+          number={totalDummy[1].number}
+          title={totalDummy[1].title}
+        />
       </div>
       <div className={`selected-list ${isOpen ? 'isOpen' : ''}`}>
         <div className="list-top">
