@@ -19,7 +19,6 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const userInfoCollectionRef = collection(db, 'users');
-
   const handleSignUp = async (event) => {
     event.preventDefault();
 
@@ -30,9 +29,14 @@ const SignUp = () => {
       if (hasErrors) {
         alert('회원가입 양식에 맞게 작성해주세요.');
       } else {
-        await createUserWithEmailAndPassword(auth, email, password);
-        await addDoc(userInfoCollectionRef, { email, userName, company, team });
-        navigate('/login');
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        const uid = user.uid;
+        console.log(uid);
+
+        await addDoc(userInfoCollectionRef, { uid, email, userName, company, team });
+        navigate(user ? '/' : '/login');
       }
     } catch (error) {
       console.error(error);
