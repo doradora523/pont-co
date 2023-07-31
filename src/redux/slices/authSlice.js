@@ -2,11 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   user: {
-    id: '',
-    username: '',
-    password: '',
-    nickname: '',
-    address: '',
+    uid: '',
+    userName: '',
+    email: '',
+    company: '',
+    team: '',
   },
   isLoading: false,
   error: null,

@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Login.scss';
 import AuthBar from '../../components/common/bar/AuthBar';
 import Input from '../../components/common/input/Input';
 import SmallButton from '../../components/common/button/SmallButton';
+
+import { auth } from '../../config/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const inputFields = [
@@ -15,9 +19,32 @@ const Login = () => {
     },
   ];
 
-  const handleLogin = () => {
-    
-  }
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const navigate = useNavigate();
+
+  const onChangeHandler = (id, value) => {
+    if (id === 'email') {
+      setEmail(value);
+    } else if (id === 'password') {
+      setPassword(value);
+    }
+  };
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    try {
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      console.log(user.user.uid);
+
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="login">
       <AuthBar login={'active'} />
@@ -36,11 +63,12 @@ const Login = () => {
               name={field.name}
               type={field.type}
               placeholder={field.placeholder}
+              onChange={(event) => onChangeHandler(field.id, event.target.value)}
             />
           ))}
         </div>
+        <SmallButton name={'Login'} type="submit" />
       </form>
-      <SmallButton name={'Login'} type="submit"/>
     </div>
   );
 };

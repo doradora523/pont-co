@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  userId: '',
   email: '',
   password: '',
   passwordCheck: '',
@@ -26,18 +27,6 @@ const signupSlice = createSlice({
     },
     setPassword: (state, action) => {
       state.password = action.payload;
-    },
-    setPasswordCheck: (state, action) => {
-      state.passwordCheck = action.payload;
-    },
-    setUserName: (state, action) => {
-      state.userName = action.payload;
-    },
-    setCompany: (state, action) => {
-      state.company = action.payload;
-    },
-    setTeam: (state, action) => {
-      state.team = action.payload;
     },
     setErrors: (state, action) => {
       state.errors = action.payload;

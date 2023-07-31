@@ -7,9 +7,9 @@ const useFormValidation = () => {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
   const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*()_+])[A-Za-z0-9!@#$%^&*()_+]{8,}$/;
   const { errors, email, userName, company, team } = useSelector((state) => state.signup);
-  const [password, setPassword] = useState(''); // 비밀번호 상태 추가
-  const [passwordCheck, setPasswordCheck] = useState(''); // 비밀번호 체크 상태 추가
-
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
+  
   const dispatch = useDispatch();
 
   /** 이메일, 비밀번호 유효성 검사 */
@@ -91,7 +91,7 @@ const useFormValidation = () => {
       }
       dispatch(setErrors(validationErrors));
     },
-    [errors, email, password, passwordCheck, userName, company, team],
+    [errors, email, password, passwordCheck, userName, company, team, dispatch],
   );
   return {
     password,
