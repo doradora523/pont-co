@@ -8,7 +8,6 @@ import Profile from '../../components/myProfile/Profile';
 import Total from '../../components/myProfile/Total';
 import './MyProfile.scss';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../../config/firebase';
 import { useSelector } from 'react-redux';
 import { itemsDummy } from '../../static/itemsDummy';
 import { totalDummy } from '../../static/totalDummy';
@@ -17,7 +16,7 @@ const MyProfile = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-
+  console.log(user);
   const handleTogleBtn = () => {
     setIsOpen(!isOpen);
   };

@@ -10,7 +10,7 @@ import './SignUp.scss';
 
 import { auth } from '../../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { addDoc, collection } from 'firebase/firestore';
+import { setDoc, doc, collection } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
 const SignUp = () => {
@@ -33,7 +33,8 @@ const SignUp = () => {
         const user = userCredential.user;
         const uid = user.uid;
 
-        await addDoc(userInfoCollectionRef, { uid, email, userName, company, team });
+        const userDocRef = doc(userInfoCollectionRef, uid);
+        await setDoc(userDocRef, { uid, email, userName, company, team });
 
         // 회원가입 후에 currentUser를 null로 설정하여 사용자 정보를 초기화
         auth.currentUser = null;

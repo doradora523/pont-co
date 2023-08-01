@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import TextBar from '../../components/common/bar/TextBar';
 import Profile from '../../components/myProfile/Profile';
 import Input from '../../components/common/input/Input';
-import { useChangeValue } from '../../hooks/useChangeValue';
 import { useNavigate } from 'react-router-dom';
 import './EditProfile.scss';
 
 import { auth } from '../../config/firebase';
-import { updateDoc, collection, doc } from 'firebase/firestore';
+import { updateDoc, doc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
 import { signOut } from 'firebase/auth';
@@ -26,10 +25,19 @@ const EditProfile = () => {
 
   const navigate = useNavigate();
 
-  const handleChangeValue = useChangeValue(setNewName, setNewTeam);
-  const handleSubmitUpdate = async (id) => {
+  const handleSubmitUpdate = async (event, id) => {
+    event.preventDefault();
+
+    console.log('handleSubmitUpdate is called'); // 확인을 위한 로그
+
     const userDoc = doc(db, 'users', id);
-    await updateDoc(userDoc);
+    await updateDoc(userDoc, {
+      userName: newName,
+      team: newTeam,
+    });
+
+    console.log('updateDoc is called'); // 확인을 위한 로그
+
     navigate('/my-profile');
   };
 
@@ -48,9 +56,26 @@ const EditProfile = () => {
       <div className="profile">
         <Profile src={myProfile.src} name={user.userName} team={user.team} edit={'edit'} />
       </div>
-      <form onSubmit={handleSubmitUpdate} className="edit-form">
-        <Input type={'text'} editClassName={'edit-name'} name={'Name'} onChange={handleChangeValue} />
-        <Input type={'text'} editClassName={'edit-team'} name={'Team'} onChange={handleChangeValue} />
+      <form
+        onSubmit={(event) => {
+          handleSubmitUpdate(event, user.uid);
+        }}
+        className="edit-form"
+      >
+        <Input
+          type={'text'}
+          editClassName={'edit-name'}
+          name={'Name'}
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+        />
+        <Input
+          type={'text'}
+          editClassName={'edit-team'}
+          name={'Team'}
+          value={newTeam}
+          onChange={(e) => setNewTeam(e.target.value)}
+        />
         <button type="submit" className="save-btn">
           Save
         </button>
