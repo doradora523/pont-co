@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import AuthBar from '../../components/common/bar/AuthBar';
 import Input from '../../components/common/input/Input';
-import { inputFields } from '../../static/signupInputFields';
+import { inputFields } from '../../static/InputFields';
 import SmallButton from '../../components/common/button/SmallButton';
 import useFormValidation from '../../hooks/useFormValidation';
 import './SignUp.scss';
@@ -31,12 +31,13 @@ const SignUp = () => {
       } else {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-
         const uid = user.uid;
-        console.log(uid);
 
         await addDoc(userInfoCollectionRef, { uid, email, userName, company, team });
-        navigate(user ? '/' : '/login');
+
+        // 회원가입 후에 currentUser를 null로 설정하여 사용자 정보를 초기화
+        auth.currentUser = null;
+        navigate('/login');
       }
     } catch (error) {
       console.error(error);

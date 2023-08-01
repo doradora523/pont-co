@@ -6,50 +6,58 @@ import { useChangeValue } from '../../hooks/useChangeValue';
 import { useNavigate } from 'react-router-dom';
 import './EditProfile.scss';
 
-import {auth} from '../../config/firebase'
-import {signOut} from 'firebase/auth'
+import { auth } from '../../config/firebase';
+import { updateDoc, collection, doc } from 'firebase/firestore';
+import { db } from '../../config/firebase';
+
+import { signOut } from 'firebase/auth';
+import { useSelector } from 'react-redux';
 
 const EditProfile = () => {
+  const { user } = useSelector((state) => state.auth);
+
   const myProfile = {
     src: 'https://file.newswire.co.kr/data/datafile2/thumb_640/2023/05/1893390626_20230503155222_9195618912.jpg',
     name: '박보영',
     team: '경영지원팀',
   };
-  const [name, setName] = useState(myProfile.name);
-  const [team, setTeam] = useState(myProfile.team);
+  const [newName, setNewName] = useState(user.userName);
+  const [newTeam, setNewTeam] = useState(user.team);
 
   const navigate = useNavigate();
 
-  const handleChangeValue = useChangeValue(setName, setTeam);
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(name, team);
+  const handleChangeValue = useChangeValue(setNewName, setNewTeam);
+  const handleSubmitUpdate = async (id) => {
+    const userDoc = doc(db, 'users', id);
+    await updateDoc(userDoc);
     navigate('/my-profile');
   };
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     try {
-      await signOut(auth)
-      navigate('/login')
-    } catch(error) {
-      console.error(error)
+      await signOut(auth);
+      navigate('/login');
+    } catch (error) {
+      console.error(error);
     }
-  }
+  };
 
   return (
     <div>
       <TextBar title={'Edit Profile'} back={'active'} />
       <div className="profile">
-        <Profile src={myProfile.src} name={myProfile.name} team={myProfile.team} edit={'edit'} />
+        <Profile src={myProfile.src} name={user.userName} team={user.team} edit={'edit'} />
       </div>
-      <form onSubmit={handleSubmit} className="edit-form">
-        <Input type={'text'} editClassName={'edit-name'} name={'Name'} value={name} onChange={handleChangeValue} />
-        <Input type={'text'} editClassName={'edit-team'} name={'Team'} value={team} onChange={handleChangeValue} />
+      <form onSubmit={handleSubmitUpdate} className="edit-form">
+        <Input type={'text'} editClassName={'edit-name'} name={'Name'} onChange={handleChangeValue} />
+        <Input type={'text'} editClassName={'edit-team'} name={'Team'} onChange={handleChangeValue} />
         <button type="submit" className="save-btn">
           Save
         </button>
-        <p className='logout' onClick={handleLogout}>Logout</p>
       </form>
+      <p className="logout" onClick={handleLogout}>
+        Logout
+      </p>
     </div>
   );
 };

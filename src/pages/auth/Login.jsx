@@ -7,43 +7,29 @@ import SmallButton from '../../components/common/button/SmallButton';
 import { auth } from '../../config/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import { inputFields } from '../../static/InputFields';
 
 const Login = () => {
-  const inputFields = [
-    { id: 'email', type: 'email', name: 'Email', placeholder: '이메일을 입력해주세요.' },
-    {
-      id: 'password',
-      type: 'password',
-      name: 'Password',
-      placeholder: '비밀번호를 입력해주세요.',
-    },
-  ];
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formValues, setFormValues] = useState({ email: '', password: '' });
 
   const navigate = useNavigate();
 
   const onChangeHandler = (id, value) => {
-    if (id === 'email') {
-      setEmail(value);
-    } else if (id === 'password') {
-      setPassword(value);
-    }
+    setFormValues((prevValues) => ({ ...prevValues, [id]: value }));
   };
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
+    const { email, password } = formValues;
     try {
-      const user = await signInWithEmailAndPassword(auth, email, password);
-      console.log(user.user.uid);
-
+      await signInWithEmailAndPassword(auth, email, password);
       navigate('/');
     } catch (error) {
       console.error(error);
     }
   };
+
 
   return (
     <div className="login">
@@ -56,7 +42,7 @@ const Login = () => {
       </div>
       <form onSubmit={handleLogin}>
         <div className="input-wrapper">
-          {inputFields.map((field) => (
+          {inputFields.slice(0, 2).map((field) => (
             <Input
               key={field.id}
               label={field.name}

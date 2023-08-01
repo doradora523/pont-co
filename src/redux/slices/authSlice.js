@@ -7,6 +7,7 @@ const initialState = {
     email: '',
     company: '',
     team: '',
+    src: 'https://file.newswire.co.kr/data/datafile2/thumb_640/2023/05/1893390626_20230503155222_9195618912.jpg',
   },
   isLoading: false,
   error: null,
@@ -16,33 +17,12 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginStart(state) {
-      state.isLoading = true;
-      state.error = null;
-    },
-    loginSuccess(state) {
-      state.isLoading = false;
-      state.error = null;
-    },
-    loginFailure(state, action) {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
-    logoutStart: (state) => {
-      state.isLoading = true;
-      state.error = null;
-    },
-    logoutSuccess: (state) => {
-      state.isLoading = false;
-      state.error = null;
-    },
-    logoutFailure: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
+    setUserData: (state, action) => {
+      state.user = action.payload;
     },
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, logoutStart, logoutSuccess, logoutFailure } = authSlice.actions;
+export const { setUserData } = authSlice.actions;
 
 export default authSlice.reducer;

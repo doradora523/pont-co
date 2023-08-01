@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoPerson } from 'react-icons/go';
 import { PiShootingStarLight } from 'react-icons/pi';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
@@ -8,77 +8,15 @@ import Profile from '../../components/myProfile/Profile';
 import Total from '../../components/myProfile/Total';
 import './MyProfile.scss';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../../config/firebase';
+import { useSelector } from 'react-redux';
+import { itemsDummy } from '../../static/itemsDummy';
+import { totalDummy } from '../../static/totalDummy';
 
 const MyProfile = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-
-  const myProfile = {
-    src: 'https://file.newswire.co.kr/data/datafile2/thumb_640/2023/05/1893390626_20230503155222_9195618912.jpg',
-    name: '박보영',
-    team: '경영지원팀',
-  };
-  const totalDummy = [
-    {
-      title: 'Total Selected',
-      number: 246,
-    },
-    {
-      title: 'Our Team',
-      number: 35,
-    },
-  ];
-  const company = 'A사';
-  const itemDummy = [
-    {
-      number: 3,
-      title: '조화롭게 소통하는 사람',
-    },
-    {
-      number: 7,
-      title: '동료들을 배려하는 배려왕',
-    },
-    {
-      number: 10,
-      title: '꾸준히 성장하는 사람',
-    },
-    {
-      number: 15,
-      title: '리더쉽이 뛰어난 사람',
-    },
-    {
-      number: 3,
-      title: '조화롭게 소통하는 사람',
-    },
-    {
-      number: 7,
-      title: '동료들을 배려하는 배려왕',
-    },
-    {
-      number: 10,
-      title: '꾸준히 성장하는 사람',
-    },
-    {
-      number: 15,
-      title: '리더쉽이 뛰어난 사람',
-    },
-    {
-      number: 3,
-      title: '조화롭게 소통하는 사람',
-    },
-    {
-      number: 7,
-      title: '동료들을 배려하는 배려왕',
-    },
-    {
-      number: 10,
-      title: '꾸준히 성장하는 사람',
-    },
-    {
-      number: 15,
-      title: '리더쉽이 뛰어난 사람',
-    },
-  ];
 
   const handleTogleBtn = () => {
     setIsOpen(!isOpen);
@@ -87,7 +25,7 @@ const MyProfile = () => {
   return (
     <div className="profile-wrapper">
       <TextBar title={'My Profile'} setting={'setting'} />
-      <Profile src={myProfile.src} name={myProfile.name} team={myProfile.team} />
+      <Profile src={user.src} name={user.userName} team={user.team} />
       <div className="total-wrapper">
         <Total
           onClick={handleTogleBtn}
@@ -104,14 +42,14 @@ const MyProfile = () => {
       </div>
       <div className={`selected-list ${isOpen ? 'isOpen' : ''}`}>
         <div className="list-top">
-          <h3 className="list-title">{`내가 달성한 ${company} 미션 기여도`}</h3>
+          <h3 className="list-title">{`내가 달성한 "${user.company}"사 미션 기여도`}</h3>
           <div className="togle-btn" onClick={handleTogleBtn}>
             {isOpen ? <IoIosArrowDown /> : <IoIosArrowUp />}
           </div>
         </div>
         <ul className="list-items">
-          {itemDummy.map((item) => (
-            <li className="list-item">
+          {itemsDummy.map((item, i) => (
+            <li className="list-item" key={i}>
               <div className="number-box">
                 <p>{item.number}</p>
               </div>
