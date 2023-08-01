@@ -1,0 +1,33 @@
+@import '../../styles/config.scss';
+
+.login {
+  .bg-circle {
+    background-color: $light-purple;
+    opacity: 60%;
+    width: 500px;
+    height: 500px;
+    border-radius: 100%;
+    position: absolute;
+    top: -100px;
+    left: -100%;
+    transform: translateX(62%);
+  }
+
+  .logo {
+    position: absolute;
+    top: 186px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    font-size: 64px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 4rem;
+    text-align: right;
+  }
+
+  .input-wrapper {
+    position: relative;
+    top: 500px;
+  }
+}
