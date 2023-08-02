@@ -12,7 +12,7 @@ import { auth } from '../../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc, collection } from 'firebase/firestore';
 import { db } from '../../config/firebase';
-import { useGetCompanyList } from '../../redux/apis/useGetCompanyList';
+import { useGetCompanyList } from '../../apis/useGetCompanyList';
 
 const SignUp = () => {
   const { email, userName, team, company, errors } = useSelector((state) => state.signup);
@@ -27,6 +27,7 @@ const SignUp = () => {
   const handleSignUp = async (event) => {
     event.preventDefault();
 
+    const defualtProfile = 'https://i.pinimg.com/originals/68/b1/77/68b177feaf7970250997c89ac56c13ca.jpg';
     try {
       // 입력 필드의 값을 가져오기 전에 유효성 검사를 먼저 수행
       const hasErrors = Object.values(errors).some((error) => error.isError);
@@ -39,7 +40,7 @@ const SignUp = () => {
         const uid = user.uid;
 
         const userDocRef = doc(userInfoCollectionRef, uid);
-        await setDoc(userDocRef, { uid, email, userName, company, team });
+        await setDoc(userDocRef, { uid, email, userName, company, team, src: defualtProfile });
 
         auth.currentUser = null;
         navigate('/login');

@@ -14,12 +14,6 @@ import { useSelector } from 'react-redux';
 
 const EditProfile = () => {
   const { user } = useSelector((state) => state.auth);
-
-  const myProfile = {
-    src: 'https://file.newswire.co.kr/data/datafile2/thumb_640/2023/05/1893390626_20230503155222_9195618912.jpg',
-    name: '박보영',
-    team: '경영지원팀',
-  };
   const [newName, setNewName] = useState(user.userName);
   const [newTeam, setNewTeam] = useState(user.team);
 
@@ -28,15 +22,11 @@ const EditProfile = () => {
   const handleSubmitUpdate = async (event, id) => {
     event.preventDefault();
 
-    console.log('handleSubmitUpdate is called'); // 확인을 위한 로그
-
     const userDoc = doc(db, 'users', id);
     await updateDoc(userDoc, {
       userName: newName,
       team: newTeam,
     });
-
-    console.log('updateDoc is called'); // 확인을 위한 로그
 
     navigate('/my-profile');
   };
@@ -54,7 +44,7 @@ const EditProfile = () => {
     <div>
       <TextBar title={'Edit Profile'} back={'active'} />
       <div className="profile">
-        <Profile src={myProfile.src} name={user.userName} team={user.team} edit={'edit'} />
+        <Profile src={user.src} name={user.userName} team={user.team} edit={'edit'} />
       </div>
       <form
         onSubmit={(event) => {

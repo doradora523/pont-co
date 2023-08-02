@@ -7,7 +7,7 @@ const initialState = {
     email: '',
     company: '',
     team: '',
-    src: 'https://file.newswire.co.kr/data/datafile2/thumb_640/2023/05/1893390626_20230503155222_9195618912.jpg',
+    src: 'https://i.pinimg.com/originals/68/b1/77/68b177feaf7970250997c89ac56c13ca.jpg',
   },
   isLoading: false,
   error: null,
