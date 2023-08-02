@@ -15,6 +15,7 @@ import { totalDummy } from '../../static/totalDummy';
 const MyProfile = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
+  const { membersList } = useSelector((state) => state.members);
   const navigate = useNavigate();
   console.log(user);
   const handleTogleBtn = () => {
@@ -35,7 +36,7 @@ const MyProfile = () => {
         <Total
           onClick={() => navigate('/')}
           icon={<GoPerson />}
-          number={totalDummy[1].number}
+          number={membersList.length}
           title={totalDummy[1].title}
         />
       </div>
