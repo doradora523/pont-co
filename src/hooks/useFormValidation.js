@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEmail, setCompany, setTeam, setUserName, setErrors } from '../redux/slices/signupSlice';
 import CheckEmailAvailability from './useCheckEmailAvailability';
+import { debounce } from 'lodash';
 
 const useFormValidation = () => {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -9,12 +10,12 @@ const useFormValidation = () => {
   const { errors, email, userName, company, team } = useSelector((state) => state.signup);
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
-  
+
   const dispatch = useDispatch();
 
   /** 이메일, 비밀번호 유효성 검사 */
   const validateField = useCallback(
-    async (id, value) => {
+    debounce(async (id, value) => {
       const validationErrors = { ...errors };
       if (value !== undefined) {
         const trimmedValue = value.trim();
@@ -76,6 +77,7 @@ const useFormValidation = () => {
             isError: trimmedValue === '',
           };
         } else if (id === 'company') {
+
           dispatch(setCompany(value));
           validationErrors.company = {
             message: trimmedValue === '' ? '회사를 선택해주세요.' : '',
@@ -84,14 +86,14 @@ const useFormValidation = () => {
         } else if (id === 'team') {
           dispatch(setTeam(value));
           validationErrors.team = {
-            message: trimmedValue === '' ? '부서를 선택해주세요.' : '',
+            message: trimmedValue === '' ? '부서를 입력해주세요.' : '',
             isError: trimmedValue === '',
           };
         }
       }
       dispatch(setErrors(validationErrors));
-    },
-    [errors, email, password, passwordCheck, userName, company, team, dispatch],
+    }, 300),
+    [(errors, email, password, passwordCheck, userName, company, team, dispatch)],
   );
   return {
     password,
