@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { membersSlice } from './slices/membersSlics';
 import authSlice from './slices/authSlice';
 import signupSlice from './slices/signupSlice';
+import membersSlice from './slices/membersSlice';
 
 export const store = configureStore({
   reducer: {

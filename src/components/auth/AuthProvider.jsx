@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { auth, db } from '../../config/firebase';
 import { setUserData } from '../../redux/slices/authSlice';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { doc, getDocs, query, collection, where, onSnapshot } from 'firebase/firestore';
+import { setMembersList } from '../../redux/slices/membersSlice';
 
 const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
@@ -15,12 +16,30 @@ const AuthProvider = ({ children }) => {
         if (doc.exists()) {
           const userData = doc.data();
           dispatch(setUserData(userData));
+          getCompanyMembers(userData);
         } else {
           dispatch(setUserData(null));
         }
       });
 
       return () => unsubscribe();
+    }
+  };
+
+  const getCompanyMembers = async (userData) => {
+    if (userData) {
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('company', '==', userData.company));
+
+      const querySnapshot = await getDocs(q);
+      let users = [];
+      querySnapshot.forEach((doc) => {
+        if (doc.id !== userData.uid) {
+          users.push(doc.data());
+        }
+      });
+
+      dispatch(setMembersList(users));
     }
   };
 

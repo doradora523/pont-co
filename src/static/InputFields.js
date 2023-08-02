@@ -25,7 +25,7 @@ export const inputFields = [
   },
   {
     id: 'company',
-    type: 'search',
+    type: 'select',
     name: 'Company',
     placeholder: '회사를 검색해주세요.',
   },

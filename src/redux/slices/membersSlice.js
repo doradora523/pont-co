@@ -13,3 +13,7 @@ export const membersSlice = createSlice({
     },
   },
 });
+
+export const { setMembersList } = membersSlice.actions;
+
+export default membersSlice.reducer;

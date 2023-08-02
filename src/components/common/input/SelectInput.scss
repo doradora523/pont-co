@@ -1,0 +1,24 @@
+@import '../../../styles/_config.scss';
+
+.ant-select {
+  .ant-select-selector {
+    width: 99% !important;
+    height: 40px !important;
+    border: none !important;
+    border-bottom: 1.5px solid $main-purple !important;
+    border-radius: 0px !important;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+
+    .ant-select-selection-item {
+      top: 4px;
+    }
+    .ant-select-selection-placeholder {
+      line-height: 40px;
+      color: #8e8e8e !important;
+    }
+  }
+  .ant-select-arrow {
+    top: 35% !important;
+  }
+}

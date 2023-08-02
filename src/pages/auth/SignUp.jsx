@@ -12,13 +12,18 @@ import { auth } from '../../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc, collection } from 'firebase/firestore';
 import { db } from '../../config/firebase';
+import { useGetCompanyList } from '../../redux/apis/useGetCompanyList';
 
 const SignUp = () => {
   const { email, userName, team, company, errors } = useSelector((state) => state.signup);
   const { password, validateField } = useFormValidation();
-  const navigate = useNavigate();
 
+  const { loading, companies } = useGetCompanyList();
+
+  const companyArray = companies.map((company) => company.name);
+  const navigate = useNavigate();
   const userInfoCollectionRef = collection(db, 'users');
+
   const handleSignUp = async (event) => {
     event.preventDefault();
 
@@ -36,7 +41,6 @@ const SignUp = () => {
         const userDocRef = doc(userInfoCollectionRef, uid);
         await setDoc(userDocRef, { uid, email, userName, company, team });
 
-        // 회원가입 후에 currentUser를 null로 설정하여 사용자 정보를 초기화
         auth.currentUser = null;
         navigate('/login');
       }
@@ -48,29 +52,33 @@ const SignUp = () => {
   return (
     <div className="sign-up">
       <AuthBar signup={'active'} />
-      <form onSubmit={handleSignUp}>
-        <div className="input-wrapper">
-          {inputFields.map((field) => (
-            <Input
-              key={field.id}
-              id={field.id}
-              type={field.type}
-              name={errors[field.id].isError ? errors[field.id].message : field.name}
-              placeholder={field.placeholder}
-              error={errors[field.id]?.isError ? 'error-label' : ''}
-              onChange={(event) => validateField(field.id, event.target.value)}
-              autoComplete={
-                field.id === 'email'
-                  ? 'username'
-                  : field.id === 'password' || field.id === 'passwordCheck'
-                  ? 'new-password'
-                  : undefined
-              }
-            />
-          ))}
-        </div>
-        <SmallButton name={'Sign Up'} type="submit" />
-      </form>
+      {!loading && (
+        <form onSubmit={handleSignUp}>
+          <div className="input-wrapper">
+            {inputFields.map((field) => (
+              <Input
+                key={field.id}
+                id={field.id}
+                type={field.type}
+                name={errors[field.id].isError ? errors[field.id].message : field.name}
+                placeholder={field.placeholder}
+                error={errors[field.id]?.isError ? 'error-label' : ''}
+                onChange={(event) => validateField(field.id, event.target.value)}
+                autoComplete={
+                  field.id === 'email'
+                    ? 'username'
+                    : field.id === 'password' || field.id === 'passwordCheck'
+                    ? 'new-password'
+                    : 'off'
+                }
+                companies={field.name === 'Company' ? companyArray : ''}
+              />
+            ))}
+          </div>
+          <SmallButton name={'Sign Up'} type="submit" />
+          <div></div>
+        </form>
+      )}
     </div>
   );
 };

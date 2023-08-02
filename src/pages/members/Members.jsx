@@ -4,13 +4,15 @@ import Member from '../../components/members/Member';
 import './Members.scss';
 import TabBar from '../../components/common/bar/TabBar';
 import { membersDummy } from '../../static/membersDummy';
+import { useSelector } from 'react-redux';
 
 const Members = () => {
+  const { membersList } = useSelector((state) => state.members);
   return (
     <div className="members">
       <TextBar title={'Members'} add={'add'} />
       <div className="member-list">
-        {membersDummy?.map((member, index) => (
+        {membersList?.map((member, index) => (
           <Member key={index} src={member.src} name={member.name} team={member.team} />
         ))}
       </div>

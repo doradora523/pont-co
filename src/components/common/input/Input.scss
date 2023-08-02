@@ -17,7 +17,32 @@
     }
   }
 
+  .search-input-wrapper {
+    position: relative;
+
+    .add-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 30px;
+      height: 30px;
+      border: none;
+      background-color: transparent;
+
+      .btn-icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 30px;
+        color: $main-purple;
+        cursor: pointer;
+        z-index: 10;
+      }
+    }
+  }
+
   input {
+    width: 98%;
     border: none;
     border-bottom: 1.5px solid $main-purple;
     font-size: 14px;
@@ -30,7 +55,9 @@
     &:focus {
       outline: none;
     }
-
+    &::placeholder {
+      color: #8e8e8e;
+    }
     &.edit-name,
     &.edit-team {
       border: 2px solid $main-gray;
