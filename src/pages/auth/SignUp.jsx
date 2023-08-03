@@ -12,7 +12,7 @@ import { auth } from '../../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc, collection } from 'firebase/firestore';
 import { db } from '../../config/firebase';
-import { useGetCompanyList } from '../../apis/useGetCompanyList';
+import { useGetCompanyList } from '../../apis/getCompanyList';
 
 const SignUp = () => {
   const { email, userName, team, company, errors } = useSelector((state) => state.signup);

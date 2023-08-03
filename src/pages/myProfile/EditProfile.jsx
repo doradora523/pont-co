@@ -10,7 +10,8 @@ import { updateDoc, doc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
 import { signOut } from 'firebase/auth';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutFailure, logoutStart, logoutSuccess } from '../../redux/slices/authSlice';
 
 const EditProfile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -18,6 +19,7 @@ const EditProfile = () => {
   const [newTeam, setNewTeam] = useState(user.team);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmitUpdate = async (event, id) => {
     event.preventDefault();
@@ -33,10 +35,12 @@ const EditProfile = () => {
 
   const handleLogout = async () => {
     try {
+      dispatch(logoutStart());
       await signOut(auth);
+      dispatch(logoutSuccess());
       navigate('/login');
     } catch (error) {
-      console.error(error);
+      dispatch(logoutFailure('로그아웃에 실패했습니다.'));
     }
   };
 

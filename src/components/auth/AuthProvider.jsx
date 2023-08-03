@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { auth, db } from '../../config/firebase';
 import { setUserData } from '../../redux/slices/authSlice';
 import { doc, getDocs, query, collection, where, onSnapshot } from 'firebase/firestore';
 import { setMembersList } from '../../redux/slices/membersSlice';
+import useFactualInfo from '../../apis/getFactualInfo';
 
 const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
@@ -49,7 +50,9 @@ const AuthProvider = ({ children }) => {
     });
 
     return () => unsubscribe();
-  }, [dispatch]);
+  }, []);
+
+  useFactualInfo();
 
   return children;
 };
