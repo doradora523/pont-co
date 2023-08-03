@@ -8,19 +8,24 @@ import './PlayingGame.scss';
 import TextBar from '../../components/common/bar/TextBar';
 import TabBar from '../../components/common/bar/TabBar';
 import MemberButton from '../../components/playing/MemberButton';
-import { questionsDummy } from '../../static/questionsDummy';
 import { useAnsweredQuestions } from '../../hooks/useAnsweredQuestions';
 import { options } from '../../static/doughnutOptions';
 import { useSelector } from 'react-redux';
+import Loading from '../../components/common/loading/Loading';
+import { doc, runTransaction } from 'firebase/firestore';
+import { db } from '../../config/firebase';
 
 Chart.register(DoughnutController, ArcElement, CategoryScale, Tooltip, Title);
 
 const PlayingGame = () => {
-  const totalQuestions = questionsDummy.length;
   const [startMemberIdx, setStartMemberIdx] = useState(0);
   const members = useSelector((state) => state.members.membersList.map((member) => [member.userName, member.team]));
+  const { user } = useSelector((state) => state.auth);
+  const { questions, loading } = useSelector((state) => state.questions);
   const endIndex = Math.min(startMemberIdx + 6, members.length);
-  const { answeredQuestions, nextQuestion, isLastQuestion } = useAnsweredQuestions(1, totalQuestions);
+  const tatalQuestions = questions.length;
+  const { answeredQuestions, nextQuestion, isLastQuestion } = useAnsweredQuestions(1, tatalQuestions);
+  const currentQuestion = questions[answeredQuestions - 1];
 
   const navigate = useNavigate();
 
@@ -28,7 +33,7 @@ const PlayingGame = () => {
   const data = {
     datasets: [
       {
-        data: [answeredQuestions, totalQuestions - answeredQuestions],
+        data: [answeredQuestions, tatalQuestions - answeredQuestions],
         backgroundColor: ['#BE9FE1', '#f4ecf8'],
         borderWidth: 0,
         borderRadius: 50,
@@ -47,25 +52,49 @@ const PlayingGame = () => {
     setStartMemberIdx((prevIdx) => (prevIdx + 6 < members.length ? prevIdx + 6 : 0));
   };
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     const selectedMember = JSON.parse(e.currentTarget.value);
-    console.log(selectedMember);
+    const saveData = {
+      question: currentQuestion,
+      userName: selectedMember[0],
+      company: user.company,
+      team: selectedMember[1],
+    };
+    const questionRef = doc(db, 'selections', currentQuestion);
+
+    try {
+      await runTransaction(db, async (transaction) => {
+        const questionDoc = await transaction.get(questionRef);
+
+        let userTeamPairs;
+        if (!questionDoc.exists()) {
+          userTeamPairs = [saveData];
+        } else {
+          userTeamPairs = [...questionDoc.data().userTeamPairs, saveData];
+        }
+
+        transaction.set(questionRef, { userTeamPairs });
+      });
+    } catch (error) {
+      console.error('Error updating document: ', error);
+    }
 
     if (isLastQuestion()) {
-      /** TODO: 페이지 이동 전, 클릭한 버튼의 데이터를 서버에 저장할 로직 구현 필요 */
       navigate('/done-game');
     } else {
       nextQuestion();
     }
   };
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <div>
       <TextBar title={'Playing'} back={'back'} />
       <div className="graph-wrapper">
-        <div className="question-number">{`${answeredQuestions} of ${totalQuestions}`}</div>
+        <div className="question-number">{`${answeredQuestions} of ${tatalQuestions}`}</div>
         <Doughnut data={data} options={options} />
-        <div className="question-content">{questionsDummy[answeredQuestions - 1]}</div>
+        <div className="question-content">{questions[answeredQuestions - 1]}</div>
       </div>
       <div className="btn-wrapper">
         <button onClick={handleShuffle} className="shuffle-btn">
@@ -75,9 +104,9 @@ const PlayingGame = () => {
         {(() => {
           const shuffledMembers = [...members];
           shuffleMembers(shuffledMembers);
-          return shuffledMembers.slice(startMemberIdx, endIndex).map((member, index) => (
-            <MemberButton key={index} member={member} onClick={handleClick} />
-          ));
+          return shuffledMembers
+            .slice(startMemberIdx, endIndex)
+            .map((member, index) => <MemberButton key={index} member={member} onClick={handleClick} />);
         })()}
       </div>
       <TabBar playing={'active'} />

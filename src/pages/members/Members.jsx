@@ -8,12 +8,13 @@ import { useSelector } from 'react-redux';
 
 const Members = () => {
   const { membersList } = useSelector((state) => state.members);
+  
   return (
     <div className="members">
       <TextBar title={'Members'} add={'add'} />
       <div className="member-list">
         {membersList?.map((member, index) => (
-          <Member key={index} src={member.src} name={member.name} team={member.team} />
+          <Member key={index} src={member.src} name={member.userName} team={member.team} />
         ))}
       </div>
       {membersDummy.length === 0 && (

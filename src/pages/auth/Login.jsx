@@ -8,11 +8,15 @@ import { auth } from '../../config/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { inputFields } from '../../static/InputFields';
+import { loginFailure, loginStart, loginSuccess } from '../../redux/slices/authSlice';
+import { useDispatch } from 'react-redux';
+import { setErrors } from '../../redux/slices/signupSlice';
 
 const Login = () => {
   const [formValues, setFormValues] = useState({ email: '', password: '' });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onChangeHandler = (id, value) => {
     setFormValues((prevValues) => ({ ...prevValues, [id]: value }));
@@ -23,13 +27,15 @@ const Login = () => {
 
     const { email, password } = formValues;
     try {
+      dispatch(loginStart());
       await signInWithEmailAndPassword(auth, email, password);
+      dispatch(loginSuccess());
       navigate('/');
     } catch (error) {
-      console.error(error);
+      dispatch(setErrors('일치하는 회원정보가 없거나, 비밀번호가 일치하지 않습니다.'));
+      dispatch(loginFailure(error.message));
     }
   };
-
 
   return (
     <div className="login">
