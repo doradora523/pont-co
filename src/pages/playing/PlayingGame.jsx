@@ -75,12 +75,10 @@ const PlayingGame = () => {
 
         transaction.set(questionRef, { userTeamPairs });
       });
-
-      console.log('Document updated with ID: ', questionRef.id);
     } catch (error) {
       console.error('Error updating document: ', error);
     }
-    console.log(isLastQuestion());
+
     if (isLastQuestion()) {
       navigate('/done-game');
     } else {

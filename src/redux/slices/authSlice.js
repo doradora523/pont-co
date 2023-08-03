@@ -9,6 +9,7 @@ const initialState = {
     team: '',
     src: 'https://i.pinimg.com/originals/68/b1/77/68b177feaf7970250997c89ac56c13ca.jpg',
   },
+  selections: [],
   isLoading: false,
   error: null,
 };
@@ -44,9 +45,21 @@ const authSlice = createSlice({
     setUserData: (state, action) => {
       state.user = action.payload;
     },
+    getSelectionsData: (state, action) => {
+      state.selections = action.payload;
+    },
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, logoutStart,logoutSuccess, logoutFailure, setUserData } = authSlice.actions;
+export const {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  logoutStart,
+  logoutSuccess,
+  logoutFailure,
+  setUserData,
+  getSelectionsData,
+} = authSlice.actions;
 
 export default authSlice.reducer;

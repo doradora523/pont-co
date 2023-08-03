@@ -19,7 +19,7 @@ export const getFactualInfo = createAsyncThunk('questions/getFactualInfo', async
     const result = await response.json();
     return result;
   } catch (error) {
-    console.log(error.message);
+    console.log('Error: ', error.message);
     return rejectWithValue(error.message);
   }
 });

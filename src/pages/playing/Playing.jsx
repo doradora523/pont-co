@@ -14,7 +14,6 @@ const Playing = () => {
   const { factualInfo } = useSelector((state) => state.questions); // Get status
 
   useEffect(() => {
-    console.log(factualInfo);
     dispatch(getQuestions(factualInfo));
   }, []);
 
