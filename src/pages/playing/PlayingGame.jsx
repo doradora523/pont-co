@@ -12,16 +12,19 @@ import { useAnsweredQuestions } from '../../hooks/useAnsweredQuestions';
 import { options } from '../../static/doughnutOptions';
 import { useSelector } from 'react-redux';
 import Loading from '../../components/common/loading/Loading';
+import { doc, runTransaction } from 'firebase/firestore';
+import { db } from '../../config/firebase';
 
 Chart.register(DoughnutController, ArcElement, CategoryScale, Tooltip, Title);
 
 const PlayingGame = () => {
   const [startMemberIdx, setStartMemberIdx] = useState(0);
   const members = useSelector((state) => state.members.membersList.map((member) => [member.userName, member.team]));
+  const { user } = useSelector((state) => state.auth);
   const { questions, loading } = useSelector((state) => state.questions);
   const endIndex = Math.min(startMemberIdx + 6, members.length);
-  const { answeredQuestions, nextQuestion, isLastQuestion } = useAnsweredQuestions(1, questions);
   const tatalQuestions = questions.length;
+  const { answeredQuestions, nextQuestion, isLastQuestion } = useAnsweredQuestions(1, tatalQuestions);
   const currentQuestion = questions[answeredQuestions - 1];
 
   const navigate = useNavigate();
@@ -49,11 +52,35 @@ const PlayingGame = () => {
     setStartMemberIdx((prevIdx) => (prevIdx + 6 < members.length ? prevIdx + 6 : 0));
   };
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     const selectedMember = JSON.parse(e.currentTarget.value);
-    const saveData = { question: currentQuestion, userName: selectedMember[0], team: selectedMember[1] };
-    console.log(saveData);
+    const saveData = {
+      question: currentQuestion,
+      userName: selectedMember[0],
+      company: user.company,
+      team: selectedMember[1],
+    };
+    const questionRef = doc(db, 'selections', currentQuestion);
 
+    try {
+      await runTransaction(db, async (transaction) => {
+        const questionDoc = await transaction.get(questionRef);
+
+        let userTeamPairs;
+        if (!questionDoc.exists()) {
+          userTeamPairs = [saveData];
+        } else {
+          userTeamPairs = [...questionDoc.data().userTeamPairs, saveData];
+        }
+
+        transaction.set(questionRef, { userTeamPairs });
+      });
+
+      console.log('Document updated with ID: ', questionRef.id);
+    } catch (error) {
+      console.error('Error updating document: ', error);
+    }
+    console.log(isLastQuestion());
     if (isLastQuestion()) {
       navigate('/done-game');
     } else {
