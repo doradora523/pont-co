@@ -19,7 +19,7 @@ import { db } from '../../config/firebase';
 
 const SignUp = () => {
   const { email, userName, team, company, errors } = useSelector((state) => state.signup);
-  const { password, validateField } = useFormValidation();
+  const { password, validateField, validateFieldOnBlur } = useFormValidation();
 
   const { loading, companies } = useGetCompanyList();
 
@@ -49,6 +49,7 @@ const SignUp = () => {
       }
     } catch (error) {
       console.error(error);
+      alert(error.message);
     }
   };
 
@@ -67,6 +68,7 @@ const SignUp = () => {
                 placeholder={field.placeholder}
                 error={errors[field.id]?.isError ? 'error-label' : ''}
                 onChange={(event) => validateField(field.id, event.target.value)}
+                onBlur={() => validateFieldOnBlur(field.id)}
                 autoComplete={
                   field.id === 'email'
                     ? 'username'

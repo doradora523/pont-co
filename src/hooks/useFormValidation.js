@@ -88,7 +88,7 @@ const useFormValidation = () => {
       }
       dispatch(setErrors(validationErrors));
     }, 300),
-    [(errors, email, password, passwordCheck, userName, company, team, dispatch)],
+    [errors, email, password, passwordCheck, userName, company, team],
   );
   return {
     password,
