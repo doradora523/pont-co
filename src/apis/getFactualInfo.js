@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetCompanyList } from './getCompanyList';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { useGetCompanyList } from './getCompanyList';
 
 export const getFactualInfo = createAsyncThunk('questions/getFactualInfo', async (data, { rejectWithValue }) => {
   try {

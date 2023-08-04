@@ -1,9 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
 import { RiSettings4Line } from 'react-icons/ri';
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 import './TextBar.scss';
-import { useNavigate } from 'react-router-dom';
 import { useInviteMember } from '../../../hooks/useInviteMember';
 
 const TextBar = ({ title, back, setting, add }) => {

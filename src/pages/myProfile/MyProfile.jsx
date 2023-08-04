@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { GoPerson } from 'react-icons/go';
 import { PiShootingStarLight } from 'react-icons/pi';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+import './MyProfile.scss';
+
 import TextBar from '../../components/common/bar/TextBar';
 import TabBar from '../../components/common/bar/TabBar';
 import Profile from '../../components/myProfile/Profile';
 import Total from '../../components/myProfile/Total';
-import './MyProfile.scss';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { getSelectionsData } from '../../redux/slices/authSlice';
 
 import { db } from '../../config/firebase';
@@ -23,27 +25,26 @@ const MyProfile = () => {
   const dispatch = useDispatch();
 
   const handleTogleBtn = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prevState) => !prevState);
+  };
+
+  const fetchSelections = async () => {
+    const selectionsCollectionRef = collection(db, 'selections');
+    const snapshot = await getDocs(selectionsCollectionRef);
+    const docs = snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }));
+
+    const filteredDocs = docs.filter((doc) => doc.data.userTeamPairs.some((item) => item.userName === user.userName));
+    const matchingUserEntries = filteredDocs.map((doc) => {
+      const matchedPairs = doc.data.userTeamPairs.filter((item) => item.userName === user.userName);
+      return { question: doc.id, count: matchedPairs.length };
+    });
+
+    dispatch(getSelectionsData(matchingUserEntries));
   };
 
   useEffect(() => {
-    const gotSelections = async () => {
-      const selectionsCollectionRef = collection(db, 'selections');
-      const snapshot = await getDocs(selectionsCollectionRef);
-
-      const docs = snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }));
-      const filteredDocs = docs.filter((doc) => doc.data.userTeamPairs.some((item) => item.userName === user.userName));
-
-      const matchingUserEntries = filteredDocs.map((doc) => {
-        const matchedPairs = doc.data.userTeamPairs.filter((item) => item.userName === user.userName);
-
-        return { question: doc.id, count: matchedPairs.length };
-      });
-
-      dispatch(getSelectionsData(matchingUserEntries));
-    };
-    gotSelections();
-  }, [user.userName, dispatch]);
+    if (user.userName) fetchSelections();
+  }, [user.userName]);
 
   return (
     <div className="profile-wrapper">

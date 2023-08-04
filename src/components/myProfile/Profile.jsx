@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { FaPen } from 'react-icons/fa';
+import './Profile.scss';
+
 import { db } from '../../config/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage';
-import { useSelector } from 'react-redux';
-import './Profile.scss';
 
 const Profile = ({ src, name, team, edit }) => {
   const { user } = useSelector((state) => state.auth);
@@ -23,12 +24,10 @@ const Profile = ({ src, name, team, edit }) => {
         const result = reader.result;
         setNewSrc(result);
 
-        // 이미지를 Firebase Storage에 저장합니다.
         const storage = getStorage();
         const storageRef = ref(storage, 'profileImages/' + file.name);
         await uploadString(storageRef, result, 'data_url');
 
-        // 다운로드 URL을 가져와 Firestore의 사용자 문서에 저장합니다.
         const downloadURL = await getDownloadURL(storageRef);
 
         const userDoc = doc(db, 'users', user.uid);

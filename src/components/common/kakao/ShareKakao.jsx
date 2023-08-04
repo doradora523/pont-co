@@ -1,25 +1,25 @@
+import { BUTTON_TITLE, CONTENT_DESCRIPTION_1, CONTENT_DESCRIPTION_2, CONTENT_TITLE, OBJECT_TYPE, SHARE_URL } from "../../../static/constants";
+
 const { Kakao } = window;
 
 export const ShareKakao = (userName, shareImg) => {
-  const sharedUrl = 'http://localhost:3000';
-
   Kakao.Share.sendDefault({
-    objectType: 'feed',
+    objectType: OBJECT_TYPE,
     content: {
-      title: '임직원 블라인드 칭찬 서비스',
-      description: `PONT-CO에서 ${userName} 님이 당신을 칭찬했습니다. 확인해 보시겠습니까?`,
+      title: CONTENT_TITLE,
+      description: `${CONTENT_DESCRIPTION_1} ${userName} ${CONTENT_DESCRIPTION_2}`,
       imageUrl: shareImg,
       link: {
-        mobileWebUrl: sharedUrl,
-        webUrl: sharedUrl,
+        mobileWebUrl: SHARE_URL,
+        webUrl: SHARE_URL,
       },
     },
     buttons: [
       {
-        title: '내 칭찬 보러가기',
+        title: BUTTON_TITLE,
         link: {
-          mobileWebUrl: sharedUrl,
-          webUrl: sharedUrl,
+          mobileWebUrl: SHARE_URL,
+          webUrl: SHARE_URL,
         },
       },
     ],

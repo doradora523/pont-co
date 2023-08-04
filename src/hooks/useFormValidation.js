@@ -3,6 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setEmail, setCompany, setTeam, setUserName, setErrors } from '../redux/slices/signupSlice';
 import CheckEmailAvailability from './useCheckEmailAvailability';
 import { debounce } from 'lodash';
+import {
+  CHECK_PASSWORD,
+  INFORM_EMAIL,
+  ERROR_EMAIL,
+  INFORM_COMPANY,
+  INFORM_PASSWORD,
+  INFORM_TEAM,
+  INFORM_USERNAME,
+  USED_EMAIL,
+  WRONG_PASSWORD,
+} from '../static/constants';
 
 const useFormValidation = () => {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -24,13 +35,13 @@ const useFormValidation = () => {
           const isValidEmail = emailRegex.test(value);
 
           if (!trimmedValue) {
-            validationErrors.email = { message: '이메일을 입력해주세요.', isError: true };
+            validationErrors.email = { message: INFORM_EMAIL, isError: true };
           } else if (!isValidEmail) {
-            validationErrors.email = { message: '유효한 이메일 형식이 아닙니다.', isError: true };
+            validationErrors.email = { message: ERROR_EMAIL, isError: true };
           } else {
             const isAvailable = await CheckEmailAvailability(value);
             if (!isAvailable) {
-              validationErrors.email = { message: '이미 사용중인 이메일입니다.', isError: true };
+              validationErrors.email = { message: USED_EMAIL, isError: true };
             } else {
               validationErrors.email = { message: '', isError: false };
             }
@@ -38,55 +49,39 @@ const useFormValidation = () => {
         } else if (id === 'password') {
           setPassword(value);
           validationErrors.password = {
-            message:
-              trimmedValue === ''
-                ? '숫자와 특수문자를 포함한 8자 이상의 비밀번호를 입력해주세요.'
-                : !passwordRegex.test(value)
-                ? '숫자와 특수문자를 포함한 8자 이상의 비밀번호를 입력해주세요.'
-                : '',
+            message: trimmedValue === '' ? INFORM_PASSWORD : !passwordRegex.test(value) ? INFORM_PASSWORD : '',
             isError: trimmedValue === '' || !passwordRegex.test(value),
           };
 
           // 비밀번호가 변경될 때 비밀번호 확인의 유효성 검사도 실시간으로 수행
           if (passwordCheck !== '') {
             validationErrors.passwordCheck = {
-              message:
-                trimmedValue === ''
-                  ? '확인을 위하여 위와 동일하게 입력해주세요.'
-                  : passwordCheck !== value
-                  ? '비밀번호가 틀렸습니다. 다시 입력해주세요.'
-                  : '',
+              message: trimmedValue === '' ? CHECK_PASSWORD : passwordCheck !== value ? WRONG_PASSWORD : '',
               isError: trimmedValue === '' || passwordCheck !== value,
             };
           }
         } else if (id === 'passwordCheck') {
           setPasswordCheck(value);
           validationErrors.passwordCheck = {
-            message:
-              trimmedValue === ''
-                ? '확인을 위하여 위와 동일하게 입력해주세요.'
-                : value !== password
-                ? '비밀번호가 틀렸습니다. 다시 입력해주세요.'
-                : '',
+            message: trimmedValue === '' ? CHECK_PASSWORD : value !== password ? WRONG_PASSWORD : '',
             isError: trimmedValue === '' || value !== password,
           };
         } else if (id === 'userName') {
           dispatch(setUserName(value));
           validationErrors.userName = {
-            message: trimmedValue === '' ? '이름을 입력해주세요.' : '',
+            message: trimmedValue === '' ? INFORM_USERNAME : '',
             isError: trimmedValue === '',
           };
         } else if (id === 'company') {
-
           dispatch(setCompany(value));
           validationErrors.company = {
-            message: trimmedValue === '' ? '회사를 선택해주세요.' : '',
+            message: trimmedValue === '' ? INFORM_COMPANY : '',
             isError: trimmedValue === '',
           };
         } else if (id === 'team') {
           dispatch(setTeam(value));
           validationErrors.team = {
-            message: trimmedValue === '' ? '부서를 입력해주세요.' : '',
+            message: trimmedValue === '' ? INFORM_TEAM : '',
             isError: trimmedValue === '',
           };
         }

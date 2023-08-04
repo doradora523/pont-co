@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './OnBoarding.scss';
+
+import { BOX_1_CONTENTS, ON_BOARDING_CONTENT, ON_BOARDING_TITLE_1, ON_BOARDING_TITLE_2 } from '../../static/constants';
 import SmallButton from '../../components/common/button/SmallButton';
 
 const OnBoarding = () => {
-  const box1Contents = [
-    '책임감이 강한 사람',
-    '말을 잘 들어주는 사람',
-    '사무실 분위기 메이커',
-    '같이 식사하고 싶은 사람',
-  ];
   const [isBoxVisible, setIsBoxVisible] = useState(true);
 
   const navigate = useNavigate();
@@ -25,11 +21,10 @@ const OnBoarding = () => {
     <div className="on-boarding-wrapper">
       <div className={`on-boarding-box_1 ${isBoxVisible ? '' : 'hide'}`}>
         <div className="title">
-          <span>동료들이 보는 나</span>는<br />
-          어떤 사람일까?
+          <span>{ON_BOARDING_TITLE_1}</span>{ON_BOARDING_TITLE_2}
         </div>
         <div className="contents">
-          {box1Contents.map((content) => (
+          {BOX_1_CONTENTS.map((content) => (
             <p>{content}</p>
           ))}
         </div>
@@ -39,8 +34,7 @@ const OnBoarding = () => {
           <img src={process.env.PUBLIC_URL + '/images/box2.png'} alt="playing sample" />
         </div>
         <div className="content">
-          익명으로 투표해서 <br />
-          응원의 마음을 전해요
+          {ON_BOARDING_CONTENT}
         </div>
       </div>
       <SmallButton name={`${isBoxVisible ? 'Next' : 'Start Now'}`} className={'on-boarding-btn'} onClick={handleBtn} />

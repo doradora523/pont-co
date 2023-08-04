@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import './Splash.scss';
 import { useNavigate } from 'react-router-dom';
+import './Splash.scss';
+import { SPLASH } from '../../static/constants';
 
 const Splash = () => {
   const navigate = useNavigate();
@@ -14,17 +15,7 @@ const Splash = () => {
 
   return (
     <div className="splash">
-      <p>
-        누가
-        <br />
-        너를
-        <br />
-        인정하고
-        <br />
-        있는지
-        <br />
-        알려줄게
-      </p>
+      <p>{SPLASH}</p>
     </div>
   );
 };

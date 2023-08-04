@@ -1,56 +1,67 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { auth, db } from '../../config/firebase';
 import { setUserData } from '../../redux/slices/authSlice';
-import { doc, getDocs, query, collection, where, onSnapshot } from 'firebase/firestore';
 import { setMembersList } from '../../redux/slices/membersSlice';
 import useFactualInfo from '../../apis/getFactualInfo';
+
+import { auth, db } from '../../config/firebase';
+import { doc, getDocs, query, collection, where, onSnapshot } from 'firebase/firestore';
 
 const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
 
-  const getUser = async (user) => {
-    if (user) {
-      const userDocRef = doc(db, 'users', user.uid);
+  const getCompanyMembers = useCallback(
+    async (userData) => {
+      if (userData) {
+        const usersRef = collection(db, 'users');
+        const q = query(usersRef, where('company', '==', userData.company));
 
-      const unsubscribe = onSnapshot(userDocRef, (doc) => {
-        if (doc.exists()) {
-          const userData = doc.data();
-          dispatch(setUserData(userData));
-          getCompanyMembers(userData);
-        } else {
-          dispatch(setUserData(null));
-        }
-      });
+        const querySnapshot = await getDocs(q);
+        let users = [];
+        querySnapshot.forEach((doc) => {
+          if (doc.id !== userData.uid) {
+            users.push(doc.data());
+          }
+        });
 
-      return () => unsubscribe();
-    }
-  };
+        dispatch(setMembersList(users));
+      }
+    },
+    [dispatch],
+  );
 
-  const getCompanyMembers = async (userData) => {
-    if (userData) {
-      const usersRef = collection(db, 'users');
-      const q = query(usersRef, where('company', '==', userData.company));
+  const getUser = useCallback(
+    (user) => {
+      if (user) {
+        const userDocRef = doc(db, 'users', user.uid);
 
-      const querySnapshot = await getDocs(q);
-      let users = [];
-      querySnapshot.forEach((doc) => {
-        if (doc.id !== userData.uid) {
-          users.push(doc.data());
-        }
-      });
+        const unsubscribe = onSnapshot(userDocRef, (doc) => {
+          if (doc.exists()) {
+            const userData = doc.data();
+            dispatch(setUserData(userData));
+            getCompanyMembers(userData);
+          } else {
+            dispatch(setUserData(null));
+          }
+        });
 
-      dispatch(setMembersList(users));
-    }
-  };
+        return () => unsubscribe();
+      }
+    },
+    [dispatch, getCompanyMembers],
+  );
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      getUser(user);
+      const unsubscribeSnapshot = getUser(user);
+      return () => {
+        unsubscribe();
+        if (unsubscribeSnapshot) unsubscribeSnapshot();
+      };
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [getUser]);
 
   useFactualInfo();
 

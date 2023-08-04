@@ -1,6 +1,7 @@
 import React from 'react';
-import './AuthBar.scss';
 import { useNavigate } from 'react-router-dom';
+import './AuthBar.scss';
+import { LOGIN, SIGN_UP } from '../../../static/constants';
 
 const AuthBar = ({ login, signup }) => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const AuthBar = ({ login, signup }) => {
           navigate('/login');
         }}
       >
-        Login
+        {LOGIN}
       </div>
       <div
         className={signup}
@@ -21,7 +22,7 @@ const AuthBar = ({ login, signup }) => {
           navigate('/sign-up');
         }}
       >
-        Sign Up
+        {SIGN_UP}
       </div>
     </div>
   );

@@ -5,13 +5,13 @@
   top: 45%;
   left: 50%;
   transform: translate(-50%, -45%);
-
   .loading-title {
     font-size: 17px;
     font-weight: 600;
     line-height: 1.5rem;
     color: $main-purple;
     text-align: center;
+    white-space: pre-wrap;
   }
   .loading-spinner {
     margin: 0 auto;
