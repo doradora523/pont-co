@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
 
   const getCompanyMembers = useCallback(
     async (userData) => {
-      if (userData) {
+      if (userData && userData.company) {
         const usersRef = collection(db, 'users');
         const q = query(usersRef, where('company', '==', userData.company));
 
@@ -39,7 +39,9 @@ const AuthProvider = ({ children }) => {
           if (doc.exists()) {
             const userData = doc.data();
             dispatch(setUserData(userData));
-            getCompanyMembers(userData);
+            if (userData) {
+              getCompanyMembers(userData);
+            }
           } else {
             dispatch(setUserData(null));
           }
@@ -51,6 +53,8 @@ const AuthProvider = ({ children }) => {
     [dispatch, getCompanyMembers],
   );
 
+  /** 컴포넌트가 마운트될 때 로그인 상태와 사용자 데이터의 변경을 추적,
+   * 컴포넌트가 언마운트될 때 추적을 중단하여 메모리 누수를 방지 */
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       const unsubscribeSnapshot = getUser(user);

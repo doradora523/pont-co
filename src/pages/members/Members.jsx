@@ -18,15 +18,14 @@ const Members = () => {
     <div className="members">
       <TextBar title={'Members'} add={'add'} />
       <div className="member-list">
-        {membersList?.map((member, index) => (
-          <Member key={index} src={member.src} name={member.userName} team={member.team} />
-        ))}
+        {membersList && membersList.length > 0 ? (
+          membersList.map((member, index) => (
+            <Member key={index} src={member.src} name={member.userName} team={member.team} />
+          ))
+        ) : (
+          <p className="noMember">{NO_MEMBER}</p>
+        )}
       </div>
-      {membersList.length === 0 && (
-        <p className="noMember">
-         {NO_MEMBER}
-        </p>
-      )}
       <TabBar member={'active'} />
     </div>
   );

@@ -7,10 +7,15 @@ const Splash = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const moveToOnBoarding = setTimeout(() => {
-      navigate('/on-boarding');
+    const moveToNextPage = setTimeout(() => {
+      if (localStorage.getItem('notFirstVisit')) {
+        navigate('/login');
+      } else {
+        localStorage.setItem('notFirstVisit', 'true');
+        navigate('/on-boarding');
+      }
     }, 1500);
-    return () => clearTimeout(moveToOnBoarding);
+    return () => clearTimeout(moveToNextPage);
   }, [navigate]);
 
   return (

@@ -17,8 +17,8 @@ import { updateDoc, doc } from 'firebase/firestore';
 
 const EditProfile = () => {
   const { user } = useSelector((state) => state.auth);
-  const [newName, setNewName] = useState(user.userName);
-  const [newTeam, setNewTeam] = useState(user.team);
+  const [newName, setNewName] = useState('');
+  const [newTeam, setNewTeam] = useState('');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -45,6 +45,10 @@ const EditProfile = () => {
       dispatch(logoutFailure(LOGOUT_FAILURE));
     }
   };
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <div>
