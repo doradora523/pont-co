@@ -1,9 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MdPeopleAlt } from 'react-icons/md';
 import { TiStarFullOutline } from 'react-icons/ti';
 import { CgProfile } from 'react-icons/cg';
 import './TabBar.scss';
-import { useNavigate } from 'react-router-dom';
 
 const TabBar = ({ member, playing, myProfile }) => {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const TabBar = ({ member, playing, myProfile }) => {
     <div className="tab-bar">
       <div
         onClick={() => {
-          navigate('/');
+          navigate('/member');
         }}
       >
         <MdPeopleAlt className={member} />

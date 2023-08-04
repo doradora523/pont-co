@@ -7,7 +7,7 @@ const initialState = {
     email: '',
     company: '',
     team: '',
-    src: 'https://i.pinimg.com/originals/68/b1/77/68b177feaf7970250997c89ac56c13ca.jpg',
+    src: '',
   },
   selections: [],
   isLoading: false,

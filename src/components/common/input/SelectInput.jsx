@@ -1,15 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Divider, Input, Select, Space, Button } from 'antd';
-import useAddCompany from '../../../hooks/useAddCompany';
 import './SelectInput.scss';
+
+import useAddCompany from '../../../hooks/useAddCompany';
 import useFormValidation from '../../../hooks/useFormValidation';
+import { ADD_COMPANY } from '../../../static/constants';
 
 const SelectInput = ({ companies, placeholder }) => {
   const [newCompany, setNewCompany] = useState('');
-  /** TODO: 사용자가 추가한 company는 추후 데이터를 모아 기존 companies를 가져오는 AI를 이용해 포함시켜야 함 */
+  /** TODO: 사용자가 추가한 company는 추후 데이터를 모아 기존 companies를 가져오는 AI를 이용해 해당 DB에 포함시켜야 함 */
   const [items, setItems] = useState(companies);
-
   const fieldId = 'company';
   const inputRef = useRef(null);
   const { handleAddCompany } = useAddCompany();
@@ -54,7 +55,7 @@ const SelectInput = ({ companies, placeholder }) => {
           >
             <Input placeholder="Please enter item" ref={inputRef} value={newCompany} onChange={onNewCompanyChange} />
             <Button type="text" icon={<PlusOutlined />} onClick={handleAddButtonClick}>
-              Add Company
+              {ADD_COMPANY}
             </Button>
           </Space>
         </>

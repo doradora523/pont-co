@@ -1,18 +1,24 @@
 import React from 'react';
-import { PacmanLoader } from 'react-spinners';
+import { PacmanLoader, PuffLoader } from 'react-spinners';
 import './Loading.scss';
+import { LOADING_TITLE } from '../../../static/constants';
 
-const Loading = () => {
-  return (
-    <div className="loading-wrapper">
-      <h3 className="loading-title">
-        질문을 생성중입니다.
-        <br />
-        잠시만 기다려주세요!
-      </h3>
-      <PacmanLoader className="loading-spinner" color="#BE9FE1" />
-    </div>
-  );
+const Loading = ({ state }) => {
+  const title = LOADING_TITLE;
+  const getLoader = () => {
+    if (state === 'login') {
+      return <PuffLoader className="loading-spinner" color="#BE9FE1" />;
+    } else if (state === 'playing') {
+      return (
+        <>
+          <h3 className="loading-title">{title}</h3>
+          <PacmanLoader className="loading-spinner" color="#BE9FE1" />
+        </>
+      );
+    }
+  };
+
+  return <div className={`loading-wrapper ${state}`}>{getLoader()}</div>;
 };
 
 export default Loading;

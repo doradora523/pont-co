@@ -1,26 +1,26 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
 const useAddCompany = () => {
-  const [isAddingCompany, setIsAddingCompany] = useState(false);
+  const companiesCollectionRef = collection(db, 'companies');
+
+  const addCompanyToDB = async (company) => {
+    const q = query(companiesCollectionRef, where('name', '==', company));
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) {
+      try {
+        await addDoc(companiesCollectionRef, { name: company });
+      } catch (error) {
+        console.error('Error adding company to Firestore:', error);
+      }
+    }
+  };
 
   const handleAddCompany = useCallback(async (company) => {
     console.log(company);
     if (company !== '') {
-      const companiesCollectionRef = collection(db, 'companies');
-      const q = query(companiesCollectionRef, where('name', '==', company));
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        try {
-          // 해당 회사가 없는 경우, 파이어스토어에 추가
-          await addDoc(companiesCollectionRef, { name: company });
-        } catch (error) {
-          console.error('Error adding company to Firestore:', error);
-        }
-      }
-      setIsAddingCompany(false);
+      await addCompanyToDB(company);
     }
   }, []);
 

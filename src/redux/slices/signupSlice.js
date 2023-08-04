@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { CHECK_PASSWORD, INFORM_COMPANY, INFORM_EMAIL, INFORM_PASSWORD, INFORM_TEAM, INFORM_USERNAME } from '../../static/constants';
 
 const initialState = {
   email: '',
@@ -8,12 +9,12 @@ const initialState = {
   company: '',
   team: '',
   errors: {
-    email: { message: '아이디를 입력해주세요.', isError: false },
-    password: { message: '8~16자리의 비밀번호를 입력해주세요.', isError: false },
-    passwordCheck: { message: '확인을 위하여 위와 동일하게 입력해주세요.', isError: false },
-    userName: { message: '이름을 입력해주세요.', isError: false },
-    company: { message: '회사를 선택해주세요.', isError: false },
-    team: { message: '부서를 선택해주세요.', isError: false },
+    email: { message: INFORM_EMAIL, isError: false },
+    password: { message: INFORM_PASSWORD, isError: false },
+    passwordCheck: { message: CHECK_PASSWORD, isError: false },
+    userName: { message: INFORM_USERNAME, isError: false },
+    company: { message: INFORM_COMPANY, isError: false },
+    team: { message: INFORM_TEAM, isError: false },
   },
 };
 

@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
-import TextBar from '../../components/common/bar/TextBar';
-import Profile from '../../components/myProfile/Profile';
-import Input from '../../components/common/input/Input';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './EditProfile.scss';
 
-import { auth } from '../../config/firebase';
-import { updateDoc, doc } from 'firebase/firestore';
-import { db } from '../../config/firebase';
+import TextBar from '../../components/common/bar/TextBar';
+import Profile from '../../components/myProfile/Profile';
+import Input from '../../components/common/input/Input';
 
-import { signOut } from 'firebase/auth';
-import { useDispatch, useSelector } from 'react-redux';
 import { logoutFailure, logoutStart, logoutSuccess } from '../../redux/slices/authSlice';
+import { LOGOUT, LOGOUT_FAILURE, SAVE } from '../../static/constants';
+
+import { auth } from '../../config/firebase';
+import { db } from '../../config/firebase';
+import { signOut } from 'firebase/auth';
+import { updateDoc, doc } from 'firebase/firestore';
 
 const EditProfile = () => {
   const { user } = useSelector((state) => state.auth);
-  const [newName, setNewName] = useState(user.userName);
-  const [newTeam, setNewTeam] = useState(user.team);
+  const [newName, setNewName] = useState('');
+  const [newTeam, setNewTeam] = useState('');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -40,9 +42,13 @@ const EditProfile = () => {
       dispatch(logoutSuccess());
       navigate('/login');
     } catch (error) {
-      dispatch(logoutFailure('로그아웃에 실패했습니다.'));
+      dispatch(logoutFailure(LOGOUT_FAILURE));
     }
   };
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <div>
@@ -71,11 +77,11 @@ const EditProfile = () => {
           onChange={(e) => setNewTeam(e.target.value)}
         />
         <button type="submit" className="save-btn">
-          Save
+          {SAVE}
         </button>
       </form>
       <p className="logout" onClick={handleLogout}>
-        Logout
+        {LOGOUT}
       </p>
     </div>
   );

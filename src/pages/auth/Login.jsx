@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import './Login.scss';
+
 import AuthBar from '../../components/common/bar/AuthBar';
 import Input from '../../components/common/input/Input';
 import SmallButton from '../../components/common/button/SmallButton';
 
+import { inputFields } from '../../static/InputFields';
+import { ERROR_LOGIN, LOGO } from '../../static/constants';
+import { setErrors } from '../../redux/slices/signupSlice';
+import { loginFailure, loginStart, loginSuccess } from '../../redux/slices/authSlice';
+
 import { auth } from '../../config/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
-import { inputFields } from '../../static/InputFields';
-import { loginFailure, loginStart, loginSuccess } from '../../redux/slices/authSlice';
-import { useDispatch } from 'react-redux';
-import { setErrors } from '../../redux/slices/signupSlice';
 
 const Login = () => {
   const [formValues, setFormValues] = useState({ email: '', password: '' });
@@ -30,9 +33,9 @@ const Login = () => {
       dispatch(loginStart());
       await signInWithEmailAndPassword(auth, email, password);
       dispatch(loginSuccess());
-      navigate('/');
+      navigate('/member');
     } catch (error) {
-      dispatch(setErrors('일치하는 회원정보가 없거나, 비밀번호가 일치하지 않습니다.'));
+      dispatch(setErrors(ERROR_LOGIN));
       dispatch(loginFailure(error.message));
     }
   };
@@ -41,11 +44,7 @@ const Login = () => {
     <div className="login">
       <AuthBar login={'active'} />
       <div className="bg-circle"></div>
-      <div className="logo">
-        PONT
-        <br />
-        -CO
-      </div>
+      <div className="logo">{LOGO}</div>
       <form onSubmit={handleLogin}>
         <div className="input-wrapper">
           {inputFields.slice(0, 2).map((field) => (
@@ -56,6 +55,7 @@ const Login = () => {
               type={field.type}
               placeholder={field.placeholder}
               onChange={(event) => onChangeHandler(field.id, event.target.value)}
+              autoComplete={field.id === 'email' ? 'username' : field.id === 'password' ? 'new-password' : 'off'}
             />
           ))}
         </div>

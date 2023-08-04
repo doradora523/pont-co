@@ -1,38 +1,47 @@
+import {
+  INFORM_COMPANY,
+  INFORM_EMAIL,
+  INFORM_PASSWORD_CHECK_PLACEHOLDER,
+  INFORM_PASSWORD_PLACEHOLDER,
+  INFORM_TEAM,
+  INFORM_USERNAME,
+} from './constants';
+
 export const inputFields = [
   {
     id: 'email',
     type: 'email',
     name: 'Email',
-    placeholder: '이메일을 입력해주세요.',
+    placeholder: INFORM_EMAIL,
   },
   {
     id: 'password',
     type: 'password',
     name: 'Password',
-    placeholder: '비밀번호를 입력해주세요.',
+    placeholder: INFORM_PASSWORD_PLACEHOLDER,
   },
   {
     id: 'passwordCheck',
     type: 'password',
     name: 'Password Check',
-    placeholder: '비밀번호를 확인해주세요.',
+    placeholder: INFORM_PASSWORD_CHECK_PLACEHOLDER,
   },
   {
     id: 'userName',
     type: 'text',
     name: 'Name',
-    placeholder: '이름을 입력해주세요.',
+    placeholder: INFORM_USERNAME,
   },
   {
     id: 'company',
     type: 'select',
     name: 'Company',
-    placeholder: '회사를 검색해주세요.',
+    placeholder: INFORM_COMPANY,
   },
   {
     id: 'team',
     type: 'search',
     name: 'Team',
-    placeholder: '소속 부서를 검색해주세요.',
+    placeholder: INFORM_TEAM,
   },
 ];
