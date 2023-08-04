@@ -57,7 +57,12 @@ const MyProfile = () => {
           number={totalSelections}
           title="Total Selected"
         />
-        <Total onClick={() => navigate('/')} icon={<GoPerson />} number={membersList.length} title="Company Members" />
+        <Total
+          onClick={() => navigate('/member')}
+          icon={<GoPerson />}
+          number={membersList.length}
+          title="Company Members"
+        />
       </div>
       <div className={`selected-list ${isOpen ? 'isOpen' : ''}`}>
         <div className="list-top">

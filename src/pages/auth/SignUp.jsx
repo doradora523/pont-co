@@ -68,7 +68,6 @@ const SignUp = () => {
                 placeholder={field.placeholder}
                 error={errors[field.id]?.isError ? 'error-label' : ''}
                 onChange={(event) => validateField(field.id, event.target.value)}
-                onBlur={() => validateFieldOnBlur(field.id)}
                 autoComplete={
                   field.id === 'email'
                     ? 'username'

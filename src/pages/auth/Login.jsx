@@ -55,6 +55,7 @@ const Login = () => {
               type={field.type}
               placeholder={field.placeholder}
               onChange={(event) => onChangeHandler(field.id, event.target.value)}
+              autoComplete={field.id === 'email' ? 'username' : field.id === 'password' ? 'new-password' : 'off'}
             />
           ))}
         </div>
