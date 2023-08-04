@@ -33,7 +33,7 @@ const Login = () => {
       dispatch(loginStart());
       await signInWithEmailAndPassword(auth, email, password);
       dispatch(loginSuccess());
-      navigate('/');
+      navigate('/member');
     } catch (error) {
       dispatch(setErrors(ERROR_LOGIN));
       dispatch(loginFailure(error.message));
@@ -44,9 +44,7 @@ const Login = () => {
     <div className="login">
       <AuthBar login={'active'} />
       <div className="bg-circle"></div>
-      <div className="logo">
-        {LOGO}
-      </div>
+      <div className="logo">{LOGO}</div>
       <form onSubmit={handleLogin}>
         <div className="input-wrapper">
           {inputFields.slice(0, 2).map((field) => (

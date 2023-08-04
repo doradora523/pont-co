@@ -12,7 +12,7 @@ const TabBar = ({ member, playing, myProfile }) => {
     <div className="tab-bar">
       <div
         onClick={() => {
-          navigate('/');
+          navigate('/member');
         }}
       >
         <MdPeopleAlt className={member} />

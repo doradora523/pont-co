@@ -17,6 +17,7 @@ const OnBoarding = () => {
       setIsBoxVisible(false);
     }
   };
+  
   return (
     <div className="on-boarding-wrapper">
       <div className={`on-boarding-box_1 ${isBoxVisible ? '' : 'hide'}`}>

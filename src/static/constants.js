@@ -7,7 +7,7 @@ const SIGN_UP = 'Sign-up';
 const ADD_COMPANY = 'Add Company';
 
 // ShareKakao
-const SHARE_URL = 'http://localhost:3000';
+const SHARE_URL = 'http://localhost:3000/splash';
 const OBJECT_TYPE = 'feed';
 const CONTENT_TITLE = '임직원 블라인드 칭찬 서비스';
 const CONTENT_DESCRIPTION_1 = 'PONT-CO에서';

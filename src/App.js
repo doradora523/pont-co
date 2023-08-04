@@ -24,9 +24,9 @@ function App() {
       <div className="App">
         <div className="page-wrapper">
           <Routes>
-            <Route path="/splash" element={<Splash />} />
+            <Route path="/" element={<Splash />} />
             <Route path="/on-boarding" element={<OnBoarding />} />
-            <Route path="/" element={<Members />} />
+            <Route path="/member" element={<Members />} />
             <Route path="/playing" element={<Playing />} />
             <Route path="/playing-game" element={<PlayingGame />} />
             <Route path="/done-game" element={<DoneGame />} />
