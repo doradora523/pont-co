@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
 import './styles/App.scss';
-
+import kakaoInitialize from './kakaoInitialize';
 import Members from './pages/members/Members';
 import Playing from './pages/playing/Playing';
 import PlayingGame from './pages/playing/PlayingGame';
@@ -14,6 +15,10 @@ import OnBoarding from './pages/onBoarding/OnBoarding';
 import AuthProvider from './components/auth/AuthProvider';
 
 function App() {
+  useEffect(() => {
+    kakaoInitialize();
+  }, []);
+
   return (
     <AuthProvider>
       <div className="App">
